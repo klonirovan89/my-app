@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import Component from "./Component";
+import {v1} from 'uuid';
 
 
 export type MoneyType = {
@@ -9,51 +10,62 @@ export type MoneyType = {
     number: string
 }
 
-type filteredType = {
-    filtered: any;
-}
+export type filteredType = "all" | "Dollars" | "RUBLS";
 
 function App() {
 
-
-    let [money, setMoney] = useState([
-            {banknots: 'Dollars', nominal: 100, number: ' a1234567890'},
-            {banknots: 'Dollars', nominal: 50, number: ' z1234567890'},
-            {banknots: 'RUBLS', nominal: 100, number: ' w1234567890'},
-            {banknots: 'Dollars', nominal: 100, number: ' e1234567890'},
-            {banknots: 'Dollars', nominal: 50, number: ' c1234567890'},
-            {banknots: 'RUBLS', nominal: 100, number: ' r1234567890'},
-            {banknots: 'Dollars', nominal: 50, number: ' x1234567890'},
-            {banknots: 'RUBLS', nominal: 50, number: ' v1234567890'}
+    let [money, setMoney] = useState<MoneyType[]>([
+            {banknots: 'Dollars', nominal: 100, number: v1()},
+            {banknots: 'Dollars', nominal: 50, number: v1()},
+            {banknots: 'RUBLS', nominal: 100, number: v1()},
+            {banknots: 'Dollars', nominal: 100, number: v1()},
+            {banknots: 'Dollars', nominal: 50, number: v1()},
+            {banknots: 'RUBLS', nominal: 100, number: v1()},
+            {banknots: 'Dollars', nominal: 50, number: v1()},
+            {banknots: 'RUBLS', nominal: 50, number: v1()}
         ]
     )
+    let [tasksForTodoList, setFilter] = useState<MoneyType[]>(money);
 
-    let [filter, setFilter] = useState<MoneyType[]>(money);
+    function addTask(title: string) {
+        if (title != "RUBLS" && title != "Dollars") {
+            alert("Введите верное значение")
+        }
+        if (title == "RUBLS" || title == "Dollars") {
+            let task = {banknots: title, nominal: 1, number: v1()};
+            let newTasks = [task, ...tasksForTodoList];
+            setMoney(newTasks);
+            setFilter(newTasks)
+        }
+    }
 
-    function filterResult(filtered: any) {
+
+    function filterResult(filtered: filteredType) {
+
         if (filtered == 'all') {
-            filter = money.filter(c => c.banknots == 'Dollars' || c.banknots == 'RUBLS')
-            setFilter(filter)
+            tasksForTodoList = money.filter(c => c.banknots == 'Dollars' || c.banknots == 'RUBLS')
+            setFilter(tasksForTodoList)
         }
         if (filtered == 'RUBLS') {
-            filter = money.filter(c => c.banknots == 'RUBLS')
-            setFilter(filter)
+            tasksForTodoList = money.filter(c => c.banknots == 'RUBLS')
+            setFilter(tasksForTodoList)
         }
         if (filtered == 'Dollars') {
-            filter = money.filter(c => c.banknots == 'Dollars')
-            setFilter(filter)
+            tasksForTodoList = money.filter(c => c.banknots == 'Dollars')
+            setFilter(tasksForTodoList)
         }
     }
 
     return (
-
         <div className="App">
             <Component
-                filter={filter}
+                tasksForTodoList={tasksForTodoList}
                 filterResult={filterResult}
+                addTask={addTask}
             />
         </div>
     );
 }
 
 export default App;
+

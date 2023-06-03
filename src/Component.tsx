@@ -1,14 +1,13 @@
-import React from 'react';
-import {MoneyType} from "./App";
+import React, {ChangeEvent, useState} from 'react';
+import {filteredType, MoneyType} from "./App";
 
 type PropsType = {
-    filter: MoneyType[],
-    filterResult: (filtered: any) => void,
-
+    tasksForTodoList: MoneyType[],
+    filterResult: (filtered: filteredType) => void,
+    addTask: (title: string) => void
 }
 
-const Component: React.FC<PropsType> = ({filter, filterResult}) => {
-
+const Component: React.FC<PropsType> = ({tasksForTodoList, filterResult, addTask}) => {
 
     function setALLFilterMoney() {
         filterResult('all')
@@ -22,22 +21,36 @@ const Component: React.FC<PropsType> = ({filter, filterResult}) => {
         filterResult('Dollars')
     }
 
+    let [title, setTitle] = useState('')
+
+    function addTasks() {
+        addTask(title)
+        setTitle('')
+    }
+
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+        setTitle(event.currentTarget.value)
+    }
+
     return (
-        <div className="App">
+        <div>
             <div>
-                {filter.map((a, index) =>
+                {tasksForTodoList.map((a, index) =>
                     <li key={index}>
-                        <span>{a.banknots}</span>
-                        <span>{a.nominal}</span>
-                        <span>{a.number}</span>
+                        <span>BANKNOT: {a.banknots}</span>
+                        <span>NOMINAL: {a.nominal}</span>
+                        <span>NUMBER: {a.number}</span>
                     </li>)}
             </div>
-            <div className="button">
+            <div>
                 <button onClick={setALLFilterMoney}>All</button>
                 <button onClick={setRublFilterMoney}>Rubl</button>
                 <button onClick={setDollarFilterMoney}>Dollar</button>
             </div>
-
+            <div>
+                <input value={title} onChange={handleChange}/>
+                <button onClick={addTasks}>+</button>
+            </div>
         </div>
     );
 };
