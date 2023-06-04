@@ -10,28 +10,29 @@ export type MoneyType = {
     number: string
 }
 
-export type filteredType = "all" | "Dollars" | "RUBLS";
+export type filteredType = "all" | "Dollars" | "RUB";
 
 function App() {
 
     let [money, setMoney] = useState<MoneyType[]>([
             {banknots: 'Dollars', nominal: 100, number: v1()},
             {banknots: 'Dollars', nominal: 50, number: v1()},
-            {banknots: 'RUBLS', nominal: 100, number: v1()},
+            {banknots: 'RUB', nominal: 100, number: v1()},
             {banknots: 'Dollars', nominal: 100, number: v1()},
             {banknots: 'Dollars', nominal: 50, number: v1()},
-            {banknots: 'RUBLS', nominal: 100, number: v1()},
+            {banknots: 'RUB', nominal: 100, number: v1()},
             {banknots: 'Dollars', nominal: 50, number: v1()},
-            {banknots: 'RUBLS', nominal: 50, number: v1()}
+            {banknots: 'RUB', nominal: 50, number: v1()}
         ]
     )
+
     let [tasksForTodoList, setFilter] = useState<MoneyType[]>(money);
 
     function addTask(title: string) {
-        if (title != "RUBLS" && title != "Dollars") {
+        if (title != "RUB" && title != "Dollars") {
             alert("Введите верное значение")
         }
-        if (title == "RUBLS" || title == "Dollars") {
+        if (title == "RUB" || title == "Dollars") {
             let task = {banknots: title, nominal: 1, number: v1()};
             let newTasks = [task, ...tasksForTodoList];
             setMoney(newTasks);
@@ -39,20 +40,21 @@ function App() {
         }
     }
 
+    function deleteMoney(number: string) {
+        setMoney(tasksForTodoList.filter(c => c.number != number))
+        setFilter(tasksForTodoList.filter(c => c.number != number))
+    }
 
     function filterResult(filtered: filteredType) {
 
         if (filtered == 'all') {
-            tasksForTodoList = money.filter(c => c.banknots == 'Dollars' || c.banknots == 'RUBLS')
-            setFilter(tasksForTodoList)
+            setFilter(money.filter(c => c.banknots == 'Dollars' || c.banknots == 'RUB'))
         }
-        if (filtered == 'RUBLS') {
-            tasksForTodoList = money.filter(c => c.banknots == 'RUBLS')
-            setFilter(tasksForTodoList)
+        if (filtered == 'RUB') {
+            setFilter(money.filter(c => c.banknots == 'RUB'))
         }
         if (filtered == 'Dollars') {
-            tasksForTodoList = money.filter(c => c.banknots == 'Dollars')
-            setFilter(tasksForTodoList)
+            setFilter(money.filter(c => c.banknots == 'Dollars'))
         }
     }
 
@@ -62,6 +64,7 @@ function App() {
                 tasksForTodoList={tasksForTodoList}
                 filterResult={filterResult}
                 addTask={addTask}
+                deleteMoney={deleteMoney}
             />
         </div>
     );
