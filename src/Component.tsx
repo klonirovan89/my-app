@@ -11,26 +11,26 @@ type PropsType = {
 
 const Component: React.FC<PropsType> = ({tasksForTodoList, filterResult, addTask, deleteMoney}) => {
 
-    function setALLFilterMoney() {
+    const setALLFilterMoney = () => {
         filterResult('all')
     }
 
-    function setRubFilterMoney() {
+    const setRubFilterMoney = () => {
         filterResult('RUB')
     }
 
-    function setDollarFilterMoney() {
+    const setDollarFilterMoney = () => {
         filterResult('Dollars')
     }
 
     let [title, setTitle] = useState('')
 
-    function addTasks() {
+    const addTasks = () => {
         addTask(title)
         setTitle('')
     }
 
-    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)
     }
 

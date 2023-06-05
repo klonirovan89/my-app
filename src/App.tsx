@@ -12,7 +12,7 @@ export type MoneyType = {
 
 export type filteredType = "all" | "Dollars" | "RUB";
 
-function App() {
+const App = () => {
 
     let [money, setMoney] = useState<MoneyType[]>([
             {banknots: 'Dollars', nominal: 100, number: v1()},
@@ -28,7 +28,7 @@ function App() {
 
     let [tasksForTodoList, setFilter] = useState<MoneyType[]>(money);
 
-    function addTask(title: string) {
+    const addTask = (title: string) => {
         if (title != "RUB" && title != "Dollars") {
             alert("Введите верное значение")
         }
@@ -40,12 +40,12 @@ function App() {
         }
     }
 
-    function deleteMoney(number: string) {
+    const deleteMoney = (number: string) => {
         setMoney(tasksForTodoList.filter(c => c.number != number))
         setFilter(tasksForTodoList.filter(c => c.number != number))
     }
 
-    function filterResult(filtered: filteredType) {
+    const filterResult = (filtered: filteredType) => {
 
         if (filtered == 'all') {
             setFilter(money.filter(c => c.banknots == 'Dollars' || c.banknots == 'RUB'))
